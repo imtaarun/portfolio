@@ -1,0 +1,72 @@
+<section
+  id="contact"
+  aria-labelledby="contact-heading"
+  class="scroll-mt-20 px-5 py-20 sm:px-8 md:py-28"
+>
+  <div appReveal class="mx-auto max-w-5xl">
+    <div class="rounded-[var(--radius-card)] bg-ink p-8 text-white sm:p-12 md:p-16">
+      <p class="eyebrow !text-white/60">Contact</p>
+      <h2
+        id="contact-heading"
+        class="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl"
+      >
+        Let's talk about your team.
+      </h2>
+      <p class="mt-4 max-w-xl text-lg text-white/70">
+        I'm open to senior full-stack roles. Email is the fastest way to reach me.
+      </p>
+
+      <div
+        class="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border border-white/15 bg-white/5 p-3 pl-5"
+      >
+        <lucide-icon [img]="icons.Mail" [size]="18" class="text-white/60" aria-hidden="true" />
+        <span #emailEl class="select-all text-lg font-medium">{{ profile.email }}</span>
+        <button
+          type="button"
+          (click)="copyEmail(emailEl)"
+          [attr.aria-label]="copied() ? 'Email copied' : 'Copy email address'"
+          class="press ml-auto inline-flex min-h-10 items-center gap-1.5 rounded-full bg-white px-4 text-sm font-medium text-ink transition-colors hover:bg-accent-soft"
+        >
+          <lucide-icon [img]="copied() ? icons.Check : icons.Copy" [size]="14" aria-hidden="true" />
+          {{ copied() ? 'Copied' : 'Copy' }}
+        </button>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a appButton variant="inverse" [href]="'mailto:' + profile.email">
+          Email me
+          <lucide-icon class="btn-icon" [img]="icons.Mail" [size]="15" aria-hidden="true" />
+        </a>
+        <a
+          appButton
+          variant="outline-inverse"
+          [href]="profile.links.linkedin"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn <app-brand-icon class="btn-icon" name="linkedin" [size]="14" />
+        </a>
+        @if (showGithub) {
+          <a
+            appButton
+            variant="outline-inverse"
+            [href]="profile.links.github"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub <app-brand-icon class="btn-icon" name="github" [size]="14" />
+          </a>
+        }
+        <a
+          appButton
+          variant="outline-inverse"
+          [href]="resume.file"
+          [attr.download]="resume.downloadName"
+        >
+          Resume (PDF)
+          <lucide-icon class="btn-icon" [img]="icons.Download" [size]="15" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
