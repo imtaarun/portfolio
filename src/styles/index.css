@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens: a clean, light, recruiter-friendly look.
+ * Warm off-white page, white cards, near-black text and one cobalt accent.
+ */
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --color-page: #f7f7f5;
+  --color-card: #ffffff;
+  --color-ink: #16181d;
+  --color-muted: #555b66;
+  --color-faint: #8a909b;
+  --color-line: #e4e5e9;
+  --color-line-strong: #cfd2d8;
+
+  --color-accent: #2349c9;
+  --color-accent-soft: #e9eefc;
+  --color-ok: #15803d;
+
+  /* One strong ease-out for all UI motion; also what Tailwind's ease-out uses. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --radius-card: 1rem;
+  --shadow-raised: 0 1px 2px rgb(22 24 29 / 0.04), 0 12px 32px -16px rgb(22 24 29 / 0.18);
+}
+
+/* Hover effects only on devices with a real pointer, so taps don't leave cards stuck lifted. */
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    background: var(--color-page);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--color-accent-soft);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+  }
+  /* Interactive cards: border darkens and the card lifts slightly. */
+  .card-hover {
+    transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover {
+      border-color: var(--color-line-strong);
+      box-shadow: var(--shadow-raised);
+      transform: translateY(-2px);
+    }
+  }
+  /* Pressed feedback for icon and toggle buttons. */
+  .press {
+    transition-property: color, background-color, border-color, transform;
+    transition-duration: 150ms;
+    transition-timing-function: var(--ease-out);
+  }
+  .press:active {
+    transform: scale(0.97);
+  }
+  .shadow-raised {
+    box-shadow: var(--shadow-raised);
+  }
+  .placeholder-text {
+    color: #9a5b00;
+    background: #fff4e0;
+    border: 1px dashed #e0b56a;
+    border-radius: 0.375rem;
+    padding: 0 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Print: show everything, including content that normally waits for scrolling or is collapsed. */
+@media print {
+  @page { margin: 14mm; }
+  html { scroll-behavior: auto; }
+  body { background: #fff; }
+  header.fixed, .print-hide, [aria-label="Back to top"], a[href="#main"] { display: none !important; }
+  [style*="opacity"] { opacity: 1 !important; }
+  [style*="transform"] { transform: none !important; }
+  .detail-panel { grid-template-rows: 1fr !important; }
+  section { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; break-inside: auto; }
+  article, .card { break-inside: avoid; box-shadow: none !important; }
+}
